@@ -1,0 +1,232 @@
+[
+    {
+        "id": "c4cac3423354515d",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "74044e39e6c307a2",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "66e91a08c74c5962",
+        "type": "inject",
+        "z": "c4cac3423354515d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "38add5eebd712f60"
+            ]
+        ]
+    },
+    {
+        "id": "38add5eebd712f60",
+        "type": "function",
+        "z": "c4cac3423354515d",
+        "name": "function 1",
+        "func": "const relayOn = flow.get('relay') ?? true;\nmsg.payload = {\n    value: relayOn ? Math.floor(200 + Math.random() * 300) : 0,\n    timestamp: Date.now()\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 300,
+        "wires": [
+            [
+                "6c65fae7259f1542",
+                "cbf657c098fe57d4"
+            ]
+        ]
+    },
+    {
+        "id": "cbf657c098fe57d4",
+        "type": "debug",
+        "z": "c4cac3423354515d",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "6c65fae7259f1542",
+        "type": "mqtt out",
+        "z": "c4cac3423354515d",
+        "name": "",
+        "topic": "tt-demo-mohamed/energy",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "74044e39e6c307a2",
+        "x": 570,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "b0105f87511485b8",
+        "type": "debug",
+        "z": "c4cac3423354515d",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "45db58988c59e6e5",
+        "type": "mqtt in",
+        "z": "c4cac3423354515d",
+        "name": "",
+        "topic": "tt-demo-mohamed/command",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "74044e39e6c307a2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "b0105f87511485b8",
+                "3bd87c0c3d1bbe92"
+            ]
+        ]
+    },
+    {
+        "id": "3bd87c0c3d1bbe92",
+        "type": "function",
+        "z": "c4cac3423354515d",
+        "name": "function 2",
+        "func": "flow.set('relay', msg.payload === 'ON');\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 460,
+        "wires": [
+            [
+                "b0105f87511485b8",
+                "ec3072c97d6aee93"
+            ]
+        ]
+    },
+    {
+        "id": "ec3072c97d6aee93",
+        "type": "mqtt out",
+        "z": "c4cac3423354515d",
+        "name": "",
+        "topic": "tt-demo-mohamed/status",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "74044e39e6c307a2",
+        "x": 630,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "87e0b545d7d38ec2",
+        "type": "inject",
+        "z": "c4cac3423354515d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "payload": " ON",
+        "payloadType": "str",
+        "x": 130,
+        "y": 640,
+        "wires": [
+            [
+                "3bd87c0c3d1bbe92"
+            ]
+        ]
+    }
+]
